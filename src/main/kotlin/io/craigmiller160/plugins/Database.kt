@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.Database
 fun Application.configureDatabase() {
   val config =
       HikariConfig().apply {
-        jdbcUrl = environment.config.property("postgres.url").getString()
+        jdbcUrl = environment.config.property("postgres.jdbcUrl").getString()
         username = environment.config.property("postgres.username").getString()
         password = environment.config.property("postgres.password").getString()
       }
@@ -17,5 +17,5 @@ fun Application.configureDatabase() {
   val datasource = HikariDataSource(config)
   Database.connect(datasource)
 
-  Flyway.configure().dataSource(datasource)
+  Flyway.configure().dataSource(datasource).load().migrate()
 }
