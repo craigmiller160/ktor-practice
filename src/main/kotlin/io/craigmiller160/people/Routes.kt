@@ -48,16 +48,14 @@ fun Route.updatePerson() {
   put("/people/{id}") {
     val person = call.receive<PersonRequest>()
     val id = UUID.fromString(call.parameters["id"])
-    val dbPerson =
-        transaction {
-              addLogger(StdOutSqlLogger)
-              People.update({ People.id.eq(id) }) {
-                it[name] = person.name
-                it[age] = person.age
-              }
-            }
-            ?.let { call.respond(PersonResponse(id = it.id.value, name = it.name, age = it.age)) }
-            ?: call.response.status(HttpStatusCode.NoContent)
+    transaction {
+      addLogger(StdOutSqlLogger)
+      People.update({ People.id.eq(id) }) {
+        it[name] = person.name
+        it[age] = person.age
+      }
+    }
+    call.response.status(HttpStatusCode.NoContent)
   }
 }
 
