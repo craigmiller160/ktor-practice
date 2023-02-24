@@ -10,6 +10,7 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 private val people = mutableListOf<OldPerson>(OldPerson("Bob", 30))
 
@@ -54,5 +55,8 @@ fun Route.deletePerson() {
 }
 
 fun Route.getAllPeople() {
-  get("/people") { call.respond(people) }
+  get("/people") {
+    newSuspendedTransaction {}
+    call.respond(people)
+  }
 }
