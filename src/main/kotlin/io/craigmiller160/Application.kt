@@ -11,7 +11,7 @@ import io.ktor.server.netty.Netty
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
-    configureSecurity()
+//    configureSecurity()
     configureSerialization()
     configureRouting()
 }
