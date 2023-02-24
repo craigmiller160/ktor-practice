@@ -4,7 +4,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.delete
@@ -13,7 +12,6 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 private val people = mutableListOf<OldPerson>(OldPerson("Bob", 30))
@@ -60,10 +58,7 @@ fun Route.deletePerson() {
 
 fun Route.getAllPeople() {
   get("/people") {
-    val list = transaction { People.selectAll().toList() }
-    println(list)
-    val list2 = transaction { Person.all().toList() }
-    println(list2)
-    call.respondText("Working")
+    val list = transaction { Person.all().toList() }
+    call.respond(list.map { PersonResponse(id = it.id.value, name = it.name, age = it.age) })
   }
 }
