@@ -11,7 +11,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 
-private val people = mutableListOf<Person>(Person("Bob", 30))
+private val people = mutableListOf<OldPerson>(OldPerson("Bob", 30))
 
 fun Routing.peopleRoutes() {
   createPerson()
@@ -23,17 +23,17 @@ fun Routing.peopleRoutes() {
 
 fun Route.createPerson() {
   post("/people") {
-    val person = call.receive<Person>()
-    people += person
+    val oldPerson = call.receive<OldPerson>()
+    people += oldPerson
     call.response.status(HttpStatusCode.Created)
   }
 }
 
 fun Route.updatePerson() {
   put("/people/{index}") {
-    val person = call.receive<Person>()
+    val oldPerson = call.receive<OldPerson>()
     val index = call.parameters["index"]?.toInt()
-    people[index!!] = person
+    people[index!!] = oldPerson
     call.response.status(HttpStatusCode.NoContent)
   }
 }
