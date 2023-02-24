@@ -10,7 +10,12 @@ import org.koin.dsl.module
 import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.koin
 
-fun Application.createDatabaseDependencies() {
+fun Application.databaseModule() {
+  koin()
+  configureDatabase()
+}
+
+fun Application.koin() {
   val config =
       HikariConfig().apply {
         jdbcUrl = environment.config.property("postgres.jdbcUrl").getString()
@@ -25,7 +30,6 @@ fun Application.createDatabaseDependencies() {
 }
 
 fun Application.configureDatabase() {
-  createDatabaseDependencies()
   val datasource by inject<DataSource>()
   Database.connect(datasource)
 
