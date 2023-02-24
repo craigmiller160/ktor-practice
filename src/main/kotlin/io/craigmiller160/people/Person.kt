@@ -17,7 +17,7 @@ data class PersonResponse(
     val age: Int
 )
 
-data class PersonRequest(val name: String, val age: Int)
+@Serializable data class PersonRequest(val name: String, val age: Int)
 
 object People : UUIDTable("people") {
   val name = varchar("name", length = 255)
@@ -27,6 +27,6 @@ object People : UUIDTable("people") {
 class Person(id: EntityID<UUID>) : Entity<UUID>(id) {
   companion object : EntityClass<UUID, Person>(People)
 
-  val name by People.name
-  val age by People.age
+  var name by People.name
+  var age by People.age
 }

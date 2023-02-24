@@ -4,6 +4,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.delete
@@ -26,9 +27,15 @@ fun Routing.peopleRoutes() {
 
 fun Route.createPerson() {
   post("/people") {
-    val oldPerson = call.receive<OldPerson>()
-    people += oldPerson
+    val person = call.receive<PersonRequest>()
+    val dbPerson = transaction {
+      Person.new {
+        name = person.name
+        age = person.age
+      }
+    }
     call.response.status(HttpStatusCode.Created)
+    call.respondText(dbPerson.id.value.toString())
   }
 }
 
