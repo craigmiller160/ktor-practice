@@ -62,6 +62,8 @@ fun Route.getAllPeople() {
   get("/people") {
     val list = transaction { People.selectAll().toList() }
     println(list)
+    val list2 = transaction { Person.all().toList() }
+    println(list2)
     call.respondText("Working")
   }
 }
