@@ -16,11 +16,10 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-
-private val people = mutableListOf<OldPerson>(OldPerson("Bob", 30))
 
 fun Routing.peopleRoutes() {
   createPerson()
@@ -60,16 +59,17 @@ fun Route.updatePerson() {
 }
 
 fun Route.getPerson() {
-  get("/people/{index}") {
-    val index = call.parameters["index"]?.toInt()
-    call.respond(people[index!!])
+  get("/people/{id}") {
+    val id = UUID.fromString(call.parameters["id"])
+    val dbPerson = transaction { Person.findById(id)!! }
+    call.respond(PersonResponse(id = dbPerson.id.value, name = dbPerson.name, age = dbPerson.age))
   }
 }
 
 fun Route.deletePerson() {
-  delete("/people/{index}") {
-    val index = call.parameters["index"]?.toInt()
-    people.removeAt(index!!)
+  delete("/people/{id}") {
+    val id = UUID.fromString(call.parameters["id"])
+    transaction { People.deleteWhere { People.id.eq(id) } }
     call.response.status(HttpStatusCode.NoContent)
   }
 }
