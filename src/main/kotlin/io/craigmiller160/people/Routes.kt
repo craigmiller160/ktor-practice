@@ -11,6 +11,9 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
+import java.util.UUID
+import org.jetbrains.exposed.sql.StdOutSqlLogger
+import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -40,11 +43,19 @@ fun Route.createPerson() {
 }
 
 fun Route.updatePerson() {
-  put("/people/{index}") {
-    val oldPerson = call.receive<OldPerson>()
-    val index = call.parameters["index"]?.toInt()
-    people[index!!] = oldPerson
-    call.response.status(HttpStatusCode.NoContent)
+  put("/people/{id}") {
+    val person = call.receive<PersonRequest>()
+    val id = UUID.fromString(call.parameters["id"])
+    val dbPerson =
+        transaction {
+              addLogger(StdOutSqlLogger)
+              Person.findById(id)?.apply {
+                name = person.name
+                age = person.age
+              }
+            }
+            ?.let { call.respond(PersonResponse(id = it.id.value, name = it.name, age = it.age)) }
+            ?: call.response.status(HttpStatusCode.NoContent)
   }
 }
 
