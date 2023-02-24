@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     id("io.ktor.plugin") version "2.2.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("com.diffplug.spotless") version "6.15.0"
 }
 
 group = "io.craigmiller160"
@@ -39,4 +40,10 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+}
+
+spotless {
+    kotlin {
+        ktfmt()
+    }
 }
