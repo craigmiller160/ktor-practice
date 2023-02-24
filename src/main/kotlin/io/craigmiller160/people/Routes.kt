@@ -4,6 +4,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.delete
@@ -60,6 +61,7 @@ fun Route.deletePerson() {
 fun Route.getAllPeople() {
   get("/people") {
     val list = transaction { People.selectAll().toList() }
-    call.respond(list)
+    println(list)
+    call.respondText("Working")
   }
 }
