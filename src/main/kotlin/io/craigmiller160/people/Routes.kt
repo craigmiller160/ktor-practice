@@ -12,11 +12,13 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import java.util.UUID
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 private val people = mutableListOf<OldPerson>(OldPerson("Bob", 30))
 
@@ -49,9 +51,9 @@ fun Route.updatePerson() {
     val dbPerson =
         transaction {
               addLogger(StdOutSqlLogger)
-              Person.findById(id)?.apply {
-                name = person.name
-                age = person.age
+              People.update({ People.id.eq(id) }) {
+                it[name] = person.name
+                it[age] = person.age
               }
             }
             ?.let { call.respond(PersonResponse(id = it.id.value, name = it.name, age = it.age)) }
