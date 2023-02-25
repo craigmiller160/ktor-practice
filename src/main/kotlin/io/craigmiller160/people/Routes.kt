@@ -5,6 +5,7 @@ import io.craigmiller160.people.domain.entity.Person
 import io.craigmiller160.people.domain.entity.newWithRequest
 import io.craigmiller160.people.domain.entity.toResponse
 import io.craigmiller160.people.domain.table.People
+import io.craigmiller160.people.domain.table.updateWithRequest
 import io.craigmiller160.people.dto.PersonRequest
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.application
@@ -22,7 +23,6 @@ import io.ktor.server.routing.put
 import java.util.UUID
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.update
 
 fun Routing.peopleRoutes() {
   createPerson()
@@ -47,12 +47,7 @@ fun Route.updatePerson() {
     application.log.info("Update Person")
     val person = call.receive<PersonRequest>()
     val id = UUID.fromString(call.parameters["id"])
-    appTransaction {
-      People.update({ People.id.eq(id) }) {
-        it[name] = person.name
-        it[age] = person.age
-      }
-    }
+    appTransaction { People.updateWithRequest(id, person) }
     call.response.status(HttpStatusCode.NoContent)
   }
 }
