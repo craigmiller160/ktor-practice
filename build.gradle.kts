@@ -41,6 +41,7 @@ dependencies {
     testImplementation("io.craigmiller160:testcontainers-common:1.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
 
 }
 

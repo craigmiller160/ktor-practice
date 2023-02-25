@@ -1,6 +1,7 @@
 3. Explore typed routing.
 4. Figure out tests.
 5. Upgrade gradle
+6. How does exposed handle relationships in queries?
 
 BUSINESS FEATURE IDEA
     - Format the business EIN in response to include the dash
