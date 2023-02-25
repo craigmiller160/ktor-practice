@@ -10,6 +10,6 @@ ktor:
 
 postgres:
   jdbcUrl: $POSTGRES_URL
-  username: postgres
-  password: password
-  maxPoolSize: 10
+  username: $POSTGRES_USER
+  password: $POSTGRES_PASSWORD
+  maxPoolSize: $POSTGRES_MAX_POOL_SIZE

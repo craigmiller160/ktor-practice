@@ -51,8 +51,14 @@ spotless {
 
 tasks.withType<JavaExec> {
     environment("POSTGRES_URL", "jdbc:postgresql://localhost:5432/ktor_practice")
+    environment("POSTGRES_USER", "postgres")
+    environment("POSTGRES_PASSWORD", "password")
+    environment("POSTGRES_MAX_POOL_SIZE", "10")
 }
 
 tasks.withType<Test> {
     environment("POSTGRES_URL", "jdbc:postgresql://localhost:5433/ktor_practice")
+    environment("POSTGRES_USER", "postgres")
+    environment("POSTGRES_PASSWORD", "password")
+    environment("POSTGRES_MAX_POOL_SIZE", "10")
 }
