@@ -2,6 +2,7 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
+val junit_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.10"
@@ -38,7 +39,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("io.insert-koin:koin-ktor:3.3.1")
     testImplementation("io.craigmiller160:testcontainers-common:1.1.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+
 }
 
 spotless {
@@ -61,6 +64,7 @@ tasks.withType<JavaExec> {
 }
 
 tasks.withType<Test> {
+    useJUnitPlatform()
     loadEnv(".env.test") { key, value ->
         environment(key, value)
     }
