@@ -1,4 +1,4 @@
 1. Customize logging to reduce the noise in the output.
 2. Figure out how to get yaml working for configuration.
 3. Explore typed routing.
-4. Figure out the dispatcher situation.
+4. Figure out tests.
