@@ -8,8 +8,6 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 
-@Serializable data class OldPerson(val name: String, val age: Int)
-
 @Serializable
 data class PersonResponse(
     @Serializable(with = UUIDSerializer::class) val id: UUID,
