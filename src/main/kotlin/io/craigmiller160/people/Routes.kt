@@ -12,13 +12,12 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import java.util.UUID
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.or
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
 
 fun Routing.peopleRoutes() {
@@ -32,12 +31,13 @@ fun Routing.peopleRoutes() {
 fun Route.createPerson() {
   post("/people") {
     val person = call.receive<PersonRequest>()
-    val dbPerson = transaction {
-      Person.new {
-        name = person.name
-        age = person.age
-      }
-    }
+    val dbPerson =
+        newSuspendedTransaction(Dispatchers.IO) {
+          Person.new {
+            name = person.name
+            age = person.age
+          }
+        }
     call.response.status(HttpStatusCode.Created)
     call.respondText(dbPerson.id.value.toString())
   }
@@ -47,8 +47,7 @@ fun Route.updatePerson() {
   put("/people/{id}") {
     val person = call.receive<PersonRequest>()
     val id = UUID.fromString(call.parameters["id"])
-    transaction {
-      addLogger(StdOutSqlLogger)
+    newSuspendedTransaction(Dispatchers.IO) {
       People.update({ People.id.eq(id) }) {
         it[name] = person.name
         it[age] = person.age
@@ -61,7 +60,7 @@ fun Route.updatePerson() {
 fun Route.getPerson() {
   get("/people/{id}") {
     val id = UUID.fromString(call.parameters["id"])
-    val dbPerson = transaction { Person.findById(id)!! }
+    val dbPerson = newSuspendedTransaction(Dispatchers.IO) { Person.findById(id)!! }
     call.respond(PersonResponse(id = dbPerson.id.value, name = dbPerson.name, age = dbPerson.age))
   }
 }
@@ -69,14 +68,14 @@ fun Route.getPerson() {
 fun Route.deletePerson() {
   delete("/people/{id}") {
     val id = UUID.fromString(call.parameters["id"])
-    transaction { People.deleteWhere { People.id.eq(id) } }
+    newSuspendedTransaction(Dispatchers.IO) { People.deleteWhere { People.id.eq(id) } }
     call.response.status(HttpStatusCode.NoContent)
   }
 }
 
 fun Route.getAllPeople() {
   get("/people") {
-    val list = transaction { Person.all().toList() }
+    val list = newSuspendedTransaction(Dispatchers.IO) { Person.all().toList() }
     call.respond(list.map { PersonResponse(id = it.id.value, name = it.name, age = it.age) })
   }
 }
