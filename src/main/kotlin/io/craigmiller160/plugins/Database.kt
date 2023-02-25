@@ -26,7 +26,7 @@ fun Application.koin() {
         password = environment.config.property("postgres.password").getString()
       }
 
-  val postgresPool = Dispatchers.IO.limitedParallelism(10)
+  val postgresPool = Dispatchers.IO.limitedParallelism(config.maximumPoolSize)
 
   koin {
     val module = module {
