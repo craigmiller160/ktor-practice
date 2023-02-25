@@ -9,7 +9,7 @@ ktor:
       - io.craigmiller160.people.PeopleKt.peopleModule
 
 postgres:
-  jdbcUrl: "jdbc:postgresql://localhost:5432/ktor_practice"
+  jdbcUrl: $POSTGRES_URL
   username: postgres
   password: password
   maxPoolSize: 10

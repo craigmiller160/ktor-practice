@@ -48,3 +48,11 @@ spotless {
         ktfmt()
     }
 }
+
+tasks.withType<JavaExec> {
+    environment("POSTGRES_URL", "jdbc:postgresql://localhost:5432/ktor_practice")
+}
+
+tasks.withType<Test> {
+    environment("POSTGRES_URL", "jdbc:postgresql://localhost:5433/ktor_practice")
+}
