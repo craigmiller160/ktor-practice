@@ -1,3 +1,11 @@
 3. Explore typed routing.
 4. Figure out tests.
 5. Upgrade gradle
+
+BUSINESS FEATURE IDEA
+    - Format the business EIN in response to include the dash
+    - Remove the dash, if provided, in the request
+    - A business has executives: CEO, COO, CFO, CTO
+    - A business has multiple departments
+        - Each department has one manager and many members
+    - Format the employee SSN to remove dashes on write, and add them back in on read
