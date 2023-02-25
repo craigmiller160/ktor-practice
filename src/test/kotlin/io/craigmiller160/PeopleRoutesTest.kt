@@ -1,6 +1,5 @@
 package io.craigmiller160
 
-import io.craigmiller160.plugins.configureRouting
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
@@ -8,11 +7,10 @@ import io.ktor.server.testing.testApplication
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ApplicationTest {
+class PeopleRoutesTest {
   @Test
   fun testRoot() = testApplication {
-    application { configureRouting() }
-    client.get("/").apply {
+    client.get("/people").apply {
       assertEquals(HttpStatusCode.OK, status)
       assertEquals("Hello World!", bodyAsText())
     }
