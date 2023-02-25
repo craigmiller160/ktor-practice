@@ -14,4 +14,9 @@ class PeopleRoutesTest {
   fun testRoot() = testApplication {
     client.get("/people").apply { assertEquals(HttpStatusCode.OK, status) }
   }
+
+  @Test
+  fun foo() {
+    println(System.getProperty("testcontainers.common.postgres.url"))
+  }
 }
