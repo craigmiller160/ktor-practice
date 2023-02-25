@@ -1,0 +1,2 @@
+postgres:
+  jdbcUrl: "jdbc:postgresql://localhost:5433/ktor_practice"
