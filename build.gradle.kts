@@ -63,7 +63,7 @@ tasks.withType<JavaExec> {
 }
 
 tasks.withType<Test> {
-    loadEnv(".env.dev") { key, value ->
+    loadEnv(".env.test") { key, value ->
         environment(key, value)
     }
 }
