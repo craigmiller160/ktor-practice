@@ -66,6 +66,8 @@ tasks.withType<JavaExec> {
 tasks.withType<Test> {
     useJUnitPlatform()
     loadEnv(".env.test") { key, value ->
-        environment(key, value)
+        if (key != "POSTGRES_URL") {
+            environment(key, value)
+        }
     }
 }
