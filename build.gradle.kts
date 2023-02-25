@@ -41,6 +41,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("io.insert-koin:koin-ktor:3.3.1")
+    testImplementation("io.craigmiller160:testcontainers-common:1.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 }
 
 spotless {
