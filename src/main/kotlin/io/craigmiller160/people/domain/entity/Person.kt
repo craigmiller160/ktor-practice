@@ -18,7 +18,7 @@ class Person(id: EntityID<UUID>) : Entity<UUID>(id) {
 fun Person.toResponse(): PersonResponse =
     PersonResponse(id = this.id.value, name = this.name, age = this.age)
 
-fun Person.Companion.new(request: PersonRequest): Person =
+fun Person.Companion.newWithRequest(request: PersonRequest): Person =
     Person.new {
       name = request.name
       age = request.age
