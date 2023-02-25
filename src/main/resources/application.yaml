@@ -4,7 +4,7 @@ ktor:
     port: 8080
   application:
     modules:
-      - io.craigmiller160.KtorPracticeRunner.rootModule
+      - io.craigmiller160.KtorPracticeRunnerKt.rootModule
       - io.craigmiller160.database.ModuleKt.databaseModule
       - io.craigmiller160.people.PeopleKt.peopleModule
 

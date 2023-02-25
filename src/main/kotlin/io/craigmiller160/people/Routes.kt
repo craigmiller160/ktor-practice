@@ -1,6 +1,6 @@
 package io.craigmiller160.people
 
-import io.craigmiller160.plugins.appTransaction
+import io.craigmiller160.database.appTransaction
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.application
 import io.ktor.server.application.call
@@ -16,9 +16,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import java.util.UUID
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.update
 
 fun Routing.peopleRoutes() {

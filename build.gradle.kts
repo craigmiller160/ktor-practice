@@ -14,7 +14,7 @@ plugins {
 group = "io.craigmiller160"
 version = "0.0.1"
 application {
-    mainClass.set("io.craigmiller160.ApplicationKt")
+    mainClass.set("io.craigmiller160.KtorPracticeRunnerKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
