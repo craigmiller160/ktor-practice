@@ -49,16 +49,21 @@ spotless {
     }
 }
 
+fun loadEnv(file: String, op: (String,String) -> Unit) {
+    File(file).readLines().forEach { line ->
+        val (key, value) = line.split("=")
+        op(key, value)
+    }
+}
+
 tasks.withType<JavaExec> {
-    environment("POSTGRES_URL", "jdbc:postgresql://localhost:5432/ktor_practice")
-    environment("POSTGRES_USER", "postgres")
-    environment("POSTGRES_PASSWORD", "password")
-    environment("POSTGRES_MAX_POOL_SIZE", "10")
+    loadEnv(".env.dev") { key, value ->
+        environment(key, value)
+    }
 }
 
 tasks.withType<Test> {
-    environment("POSTGRES_URL", "jdbc:postgresql://localhost:5433/ktor_practice")
-    environment("POSTGRES_USER", "postgres")
-    environment("POSTGRES_PASSWORD", "password")
-    environment("POSTGRES_MAX_POOL_SIZE", "10")
+    loadEnv(".env.dev") { key, value ->
+        environment(key, value)
+    }
 }
