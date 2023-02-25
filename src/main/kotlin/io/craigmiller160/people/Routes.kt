@@ -2,9 +2,9 @@ package io.craigmiller160.people
 
 import io.craigmiller160.database.appTransaction
 import io.craigmiller160.people.domain.entity.Person
+import io.craigmiller160.people.domain.entity.toResponse
 import io.craigmiller160.people.domain.table.People
 import io.craigmiller160.people.dto.PersonRequest
-import io.craigmiller160.people.dto.PersonResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.application
 import io.ktor.server.application.call
@@ -66,7 +66,7 @@ fun Route.getPerson() {
     application.log.info("Get Person")
     val id = UUID.fromString(call.parameters["id"])
     val dbPerson = appTransaction { Person.findById(id)!! }
-    call.respond(PersonResponse(id = dbPerson.id.value, name = dbPerson.name, age = dbPerson.age))
+    call.respond(dbPerson.toResponse())
   }
 }
 
@@ -83,6 +83,6 @@ fun Route.getAllPeople() {
   get("/people") {
     application.log.info("Get All People")
     val list = appTransaction { Person.all().toList() }
-    call.respond(list.map { PersonResponse(id = it.id.value, name = it.name, age = it.age) })
+    call.respond(list.map { it.toResponse() })
   }
 }

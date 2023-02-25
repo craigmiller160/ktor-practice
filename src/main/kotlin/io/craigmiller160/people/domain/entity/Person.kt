@@ -1,6 +1,7 @@
 package io.craigmiller160.people.domain.entity
 
 import io.craigmiller160.people.domain.table.People
+import io.craigmiller160.people.dto.PersonResponse
 import java.util.UUID
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -12,3 +13,6 @@ class Person(id: EntityID<UUID>) : Entity<UUID>(id) {
   var name by People.name
   var age by People.age
 }
+
+fun Person.toResponse(): PersonResponse =
+    PersonResponse(id = this.id.value, name = this.name, age = this.age)
