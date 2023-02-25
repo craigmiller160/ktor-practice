@@ -56,8 +56,8 @@ fun Route.getPerson() {
   get("/people/{id}") {
     application.log.info("Get Person")
     val id = UUID.fromString(call.parameters["id"])
-    val dbPerson = appTransaction { Person.findById(id)!! }
-    call.respond(dbPerson.toResponse())
+    appTransaction { Person.findById(id) }?.let { call.respond(it.toResponse()) }
+        ?: call.response.status(HttpStatusCode.NoContent)
   }
 }
 
