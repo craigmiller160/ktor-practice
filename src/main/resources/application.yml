@@ -1,0 +1,15 @@
+ktor:
+  development: true
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - io.craigmiller160.ApplicationKt.rootModule
+      - io.craigmiller160.plugins.DatabaseKt.databaseModule
+      - io.craigmiller160.people.PeopleKt.peopleModule
+
+postgres:
+  jdbcUrl: jdbc:postgresql://localhost:5432/ktor_practice
+  username: postgres
+  password: password
+  maxPoolSize: 10
