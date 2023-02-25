@@ -12,6 +12,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import java.util.UUID
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -19,6 +20,9 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
+import org.koin.core.qualifier.named
+import org.koin.java.KoinJavaComponent.inject
+import org.koin.ktor.ext.inject
 
 fun Routing.peopleRoutes() {
   createPerson()
@@ -74,8 +78,9 @@ fun Route.deletePerson() {
 }
 
 fun Route.getAllPeople() {
+  val dispatcher by inject<CoroutineDispatcher>(named("postgresPool"))
   get("/people") {
-    val list = newSuspendedTransaction(Dispatchers.IO) { Person.all().toList() }
+    val list = newSuspendedTransaction(dispatcher) { Person.all().toList() }
     call.respond(list.map { PersonResponse(id = it.id.value, name = it.name, age = it.age) })
   }
 }
