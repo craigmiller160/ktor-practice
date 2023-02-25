@@ -65,15 +65,11 @@ fun Route.deletePerson() {
   delete("/people/{id}") {
     application.log.info("Delete Person")
     val id = UUID.fromString(call.parameters["id"])
-    appTransaction { People.deleteWhere { People.id.eq(id) } }
+    appTransaction { People.deleteWhere { People.id eq id } }
     call.response.status(HttpStatusCode.NoContent)
   }
 }
 
 fun Route.getAllPeople() {
-  get("/people") {
-    application.log.info("Get All People")
-    val list = appTransaction { Person.all().toList() }
-    call.respond(list.map { it.toResponse() })
-  }
+  get("/people") { application.peopleService().getAllPeople().let { call.respond(it) } }
 }
