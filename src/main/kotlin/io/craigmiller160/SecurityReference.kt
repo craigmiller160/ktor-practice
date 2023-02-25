@@ -1,4 +1,4 @@
-package io.craigmiller160.plugins
+package io.craigmiller160
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
