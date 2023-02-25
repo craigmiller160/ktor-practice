@@ -1,6 +1,6 @@
 package io.craigmiller160.people.domain.entity
 
-import io.craigmiller160.people.People
+import io.craigmiller160.people.domain.table.People
 import java.util.UUID
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
