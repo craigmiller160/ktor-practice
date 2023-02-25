@@ -5,12 +5,11 @@ import io.craigmiller160.people.domain.entity.Person
 import io.craigmiller160.people.domain.entity.toResponse
 import io.craigmiller160.people.dto.PersonResponse
 import io.ktor.server.application.Application
-import io.ktor.server.application.application
 import io.ktor.server.application.log
 
 class PeopleService(val application: Application)
 
-fun Application.peopleService(): PeopleService = PeopleService()
+fun Application.peopleService(): PeopleService = PeopleService(this)
 
 suspend fun PeopleService.getAllPeople(): List<PersonResponse> {
   application.log.info("Get All People")
