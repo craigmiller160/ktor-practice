@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.Transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.koin.core.context.GlobalContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.koin.ktor.ext.inject
@@ -26,7 +29,7 @@ fun Application.koin() {
         password = environment.config.property("postgres.password").getString()
       }
 
-  val postgresPool = Dispatchers.IO.limitedParallelism(config.maximumPoolSize)
+  val postgresPool = Dispatchers.IO.limitedParallelism(10)
 
   koin {
     val module = module {
@@ -42,4 +45,13 @@ fun Application.configureDatabase() {
   Database.connect(datasource)
 
   Flyway.configure().dataSource(datasource).load().migrate()
+}
+
+suspend fun <T> appTransaction(
+    db: Database? = null,
+    transactionIsolation: Int? = null,
+    statement: suspend Transaction.() -> T
+): T {
+  val postgresPoolDispatcher = GlobalContext.get().get<CoroutineDispatcher>(named("postgresPool"))
+  return newSuspendedTransaction(postgresPoolDispatcher, db, transactionIsolation, statement)
 }

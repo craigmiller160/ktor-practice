@@ -1,5 +1,6 @@
 package io.craigmiller160.people
 
+import io.craigmiller160.plugins.appTransaction
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
@@ -80,7 +81,7 @@ fun Route.deletePerson() {
 fun Route.getAllPeople() {
   val dispatcher by inject<CoroutineDispatcher>(named("postgresPool"))
   get("/people") {
-    val list = newSuspendedTransaction(dispatcher) { Person.all().toList() }
+    val list = appTransaction { Person.all().toList() }
     call.respond(list.map { PersonResponse(id = it.id.value, name = it.name, age = it.age) })
   }
 }
