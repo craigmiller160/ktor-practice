@@ -2,6 +2,7 @@ package io.craigmiller160.people
 
 import io.craigmiller160.database.appTransaction
 import io.craigmiller160.people.domain.entity.Person
+import io.craigmiller160.people.domain.entity.new
 import io.craigmiller160.people.domain.entity.toResponse
 import io.craigmiller160.people.domain.table.People
 import io.craigmiller160.people.dto.PersonRequest
@@ -35,12 +36,7 @@ fun Route.createPerson() {
   post("/people") {
     application.log.info("Create Person")
     val person = call.receive<PersonRequest>()
-    val dbPerson = appTransaction {
-      Person.new {
-        name = person.name
-        age = person.age
-      }
-    }
+    val dbPerson = appTransaction { Person.new(person) }
     call.response.status(HttpStatusCode.Created)
     call.respondText(dbPerson.id.value.toString())
   }

@@ -1,6 +1,7 @@
 package io.craigmiller160.people.domain.entity
 
 import io.craigmiller160.people.domain.table.People
+import io.craigmiller160.people.dto.PersonRequest
 import io.craigmiller160.people.dto.PersonResponse
 import java.util.UUID
 import org.jetbrains.exposed.dao.Entity
@@ -16,3 +17,9 @@ class Person(id: EntityID<UUID>) : Entity<UUID>(id) {
 
 fun Person.toResponse(): PersonResponse =
     PersonResponse(id = this.id.value, name = this.name, age = this.age)
+
+fun Person.Companion.new(request: PersonRequest): Person =
+    Person.new {
+      name = request.name
+      age = request.age
+    }
