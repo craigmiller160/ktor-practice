@@ -6,7 +6,7 @@ ktor:
     modules:
       - io.craigmiller160.KtorPracticeRunnerKt.rootModule
       - io.craigmiller160.database.ModuleKt.databaseModule
-      - io.craigmiller160.people.PeopleKt.peopleModule
+      - io.craigmiller160.people.ModuleKt.peopleModule
 
 postgres:
   jdbcUrl: $POSTGRES_URL

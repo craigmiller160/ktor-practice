@@ -38,7 +38,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("io.insert-koin:koin-ktor:3.3.1")
-    testImplementation("io.craigmiller160:testcontainers-common:1.1.0")
+    testImplementation("io.craigmiller160:testcontainers-common:1.2.0-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
@@ -67,8 +67,6 @@ tasks.withType<JavaExec> {
 tasks.withType<Test> {
     useJUnitPlatform()
     loadEnv(".env.test") { key, value ->
-        if (key != "POSTGRES_URL") {
-            environment(key, value)
-        }
+        environment(key, value)
     }
 }
