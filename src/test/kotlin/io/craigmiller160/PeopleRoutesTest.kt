@@ -30,10 +30,6 @@ class PeopleRoutesTest {
   }
   @Test
   fun testRoot() = testSuspend {
-    //    val result = transaction {
-    //      Person.all().toList()
-    //    }
-    //    println(result)
     app.client.get("/people").apply { assertEquals(HttpStatusCode.OK, status) }
   }
 }
