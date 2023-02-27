@@ -4,7 +4,7 @@ import io.ktor.server.application.Application
 import javax.sql.DataSource
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
-import org.koin.ktor.ext.inject
+import org.koin.ktor.ext.get
 
 fun Application.databaseModule() {
   dependencies()
@@ -12,7 +12,7 @@ fun Application.databaseModule() {
 }
 
 fun Application.initializeDatabase() {
-  val datasource by inject<DataSource>()
+  val datasource = get<DataSource>()
   Database.connect(datasource)
 
   Flyway.configure().dataSource(datasource).load().migrate()
