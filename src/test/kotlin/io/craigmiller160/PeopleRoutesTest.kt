@@ -20,6 +20,7 @@ class PeopleRoutesTest {
     @BeforeAll
     fun beforeAll() {
       app = TestApplication {}
+      app.start()
     }
 
     @JvmStatic
