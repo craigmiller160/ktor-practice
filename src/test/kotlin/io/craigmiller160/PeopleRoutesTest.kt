@@ -2,9 +2,12 @@ package io.craigmiller160
 
 import io.craigmiller160.people.domain.entity.Person
 import io.craigmiller160.people.domain.table.People
+import io.craigmiller160.people.dto.PersonResponse
 import io.craigmiller160.testcontainers.common.TestcontainersExtension
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.*
 import io.ktor.server.testing.TestApplication
 import io.ktor.test.dispatcher.testSuspend
 import kotlin.test.assertEquals
@@ -25,7 +28,13 @@ class PeopleRoutesTest {
     @JvmStatic
     @BeforeAll
     fun beforeAll() {
-      app = TestApplication {}
+      app =
+          TestApplication {
+
+            //        install(ClientContentNegotiation) {
+            //
+            //        }
+          }
       app.start()
     }
 
@@ -55,6 +64,10 @@ class PeopleRoutesTest {
 
   @Test
   fun testRoot() = testSuspend {
-    app.client.get("/people").apply { assertEquals(HttpStatusCode.OK, status) }
+    app.client.get("/people").apply {
+      assertEquals(HttpStatusCode.OK, status)
+      val body = body<PersonResponse>()
+      println(body)
+    }
   }
 }
